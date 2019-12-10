@@ -8,17 +8,18 @@ class DrupalAuthPlugin extends Plugin {
 
     function bootstrap() {
         $config = $this->getConfig();
+        file_put_contents('/tmp/debug',get_class($config));
 
         $enabled = $config->get('drupal-enabled');
         if (in_array($enabled, array('all', 'staff'))) {
             require_once('drupal_connector.php');
             StaffAuthenticationBackend::register(
-                new DrupalStaffAuthBackend($this->getConfig()));
+                new DrupalStaffAuthBackend($config));
         }
         if (in_array($enabled, array('all', 'client'))) {
             require_once('drupal_connector.php');
             UserAuthenticationBackend::register(
-                new DrupalClientAuthBackend($this->getConfig()));
+                new DrupalClientAuthBackend($config));
         }
     }
 }
