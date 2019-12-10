@@ -156,6 +156,12 @@ class DrupalClientAuthBackend extends UserAuthenticationBackend {
 
     public static $name = "Drupal";
 
+    /** @var DrupalPluginConfig */
+    private $config;
+
+    /** @var DrupalAuth */
+    private $drupal;
+
     public function __construct($config) {
         $this->config = $config;
         $this->drupal = new DrupalAuth($config);
