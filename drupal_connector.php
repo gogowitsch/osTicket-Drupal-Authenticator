@@ -4,6 +4,7 @@ require_once(INCLUDE_DIR . 'class.usersession.php');
 
 class DrupalAuth {
 
+    /** @var DrupalPluginConfig */
     public $config;
 
     public $access_token;
@@ -21,7 +22,7 @@ class DrupalAuth {
     public function authenticate($fields, $context) {
         $ch = $this->get_curl();
 
-        // Set postfields using what we extracted from the form:
+        // Set POST fields using what we extracted from the form:
         $fields += $this->getFormFields(curl_exec($ch));
         $post_fields_string = http_build_query($fields);
 
@@ -46,7 +47,7 @@ class DrupalAuth {
             return $this->getInputs($matches[1]);
         }
 
-        die('Didn\'t find a login form. Please check the plugin configuration.');
+        die('Didn’t find a login form. Please check the plugin configuration.');
     }
 
     private function getInputs($form) {
@@ -95,9 +96,9 @@ class DrupalAuth {
         $cookie_file_path = '/tmp/drupal_cookie_jar.txt251';
         if (!file_exists($cookie_file_path)) {
             register_shutdown_function(
-              static function () use ($cookie_file_path) {
-                  @unlink($cookie_file_path);
-              });
+                static function () use ($cookie_file_path) {
+                    @unlink($cookie_file_path);
+                });
         }
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
@@ -116,7 +117,11 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
 
     public static $service_name = "DRUPAL";
 
+    /** @var DrupalPluginConfig */
     public $config;
+
+    /** @var DrupalAuth */
+    private $drupal;
 
     public function __construct($config) {
         $this->config = $config;
@@ -130,8 +135,8 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
 
     public function authenticate($username, $password = FALSE) {
         if ($this->drupal->authenticate(
-          ['name' => $username, 'pass' => $password],
-          'agent')) {
+            ['name' => $username, 'pass' => $password],
+            'agent')) {
 
             if ($acct = StaffSession::lookup($username))
                 return $acct;
@@ -160,8 +165,8 @@ class DrupalClientAuthBackend extends UserAuthenticationBackend {
 
     public function authenticate($username, $password = FALSE) {
         if ($this->drupal->authenticate(
-          ['name' => $username, 'pass' => $password],
-          'agent')) {
+            ['name' => $username, 'pass' => $password],
+            'agent')) {
             if ($acct = UserSession::lookup($username))
                 return $acct;
         }
