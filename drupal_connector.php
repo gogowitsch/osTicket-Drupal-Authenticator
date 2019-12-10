@@ -115,8 +115,6 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
 
     public static $name = "Drupal";
 
-    public static $service_name = "DRUPAL";
-
     /** @var DrupalPluginConfig */
     public $config;
 
@@ -150,8 +148,6 @@ class DrupalClientAuthBackend extends UserAuthenticationBackend {
     public static $id = "drupal.client";
 
     public static $name = "Drupal";
-
-    public static $service_name = "DRUPAL";
 
     public function __construct($config) {
         $this->config = $config;
