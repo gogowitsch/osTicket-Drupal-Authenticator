@@ -93,7 +93,7 @@ class DrupalAuth {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
-        $cookie_file_path = '/tmp/drupal_cookie_jar.txt251';
+        $cookie_file_path = '/tmp/drupal_cookie_jar.txt';
         if (!file_exists($cookie_file_path)) {
             register_shutdown_function(
                 static function () use ($cookie_file_path) {
