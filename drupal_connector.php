@@ -107,6 +107,7 @@ class DrupalAuth {
 
         return $ch;
     }
+
 }
 
 class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
@@ -138,8 +139,9 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
             ['name' => $username, 'pass' => $password],
             'agent')) {
 
-            if ($acct = StaffSession::lookup($username))
+            if ($acct = StaffSession::lookup($username)) {
                 return $acct;
+            }
 
             $msg_template = Plugin::translate('auth-drupal')[0](
                 "User name and password are correct, but you don't have an account for this ticket website yet. Please contact %s.");
@@ -148,6 +150,7 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
         }
         return FALSE;
     }
+
 }
 
 class DrupalClientAuthBackend extends UserAuthenticationBackend {
@@ -176,9 +179,11 @@ class DrupalClientAuthBackend extends UserAuthenticationBackend {
         if ($this->drupal->authenticate(
             ['name' => $username, 'pass' => $password],
             'agent')) {
-            if ($acct = UserSession::lookup($username))
+            if ($acct = UserSession::lookup($username)) {
                 return $acct;
+            }
         }
         return FALSE;
     }
+
 }
