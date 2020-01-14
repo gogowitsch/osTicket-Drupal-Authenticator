@@ -4,9 +4,9 @@ require_once(INCLUDE_DIR.'class.plugin.php');
 require_once('config.php');
 
 class DrupalAuthPlugin extends Plugin {
-    var $config_class = "DrupalPluginConfig";
+    public $config_class = "DrupalPluginConfig";
 
-    function bootstrap() {
+    public function bootstrap() {
         /** @var \DrupalPluginConfig $config */
         $config = $this->getConfig();
 
