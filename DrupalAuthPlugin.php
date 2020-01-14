@@ -7,8 +7,8 @@ class DrupalAuthPlugin extends Plugin {
     var $config_class = "DrupalPluginConfig";
 
     function bootstrap() {
+        /** @var \DrupalPluginConfig $config */
         $config = $this->getConfig();
-        file_put_contents('/tmp/debug',get_class($config));
 
         $enabled = $config->get('drupal-enabled');
         if (in_array($enabled, array('all', 'staff'))) {
