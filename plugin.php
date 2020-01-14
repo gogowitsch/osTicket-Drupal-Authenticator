@@ -1,4 +1,5 @@
 <?php
+
 return array(
     'id' =>             'auth:drupal', # notrans
     'version' =>        '0.1',

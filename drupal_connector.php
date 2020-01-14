@@ -143,8 +143,8 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
 
             $msg_template = Plugin::translate('auth-drupal')[0](
                 "User name and password are correct, but you don't have an account for this ticket website yet. Please contact %s.");
-            $sprintf = sprintf($msg_template, $cfg->getAdminEmail());
-            return new AccessDenied($sprintf);
+            $msg = sprintf($msg_template, $cfg->getAdminEmail());
+            return new AccessDenied($msg);
         }
         return FALSE;
     }
