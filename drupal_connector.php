@@ -19,10 +19,11 @@ class DrupalAuth {
     }
 
     /**
-     * @param array $fields with user and pass
-     * @param string $context can be either "client" or "agent".
+     * @param  array   $fields   with user and pass
+     * @param  string  $context  can be either "client" or "agent".
      *
      * @return bool TRUE if login was successful
+     * @throws \NoDrupalFormFoundException
      */
     public function authenticate($fields, $context) {
         $ch = $this->get_curl();
