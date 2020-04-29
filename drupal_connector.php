@@ -2,6 +2,11 @@
 
 require_once(INCLUDE_DIR . 'class.usersession.php');
 
+class NoDrupalFormFoundException extends RuntimeException {
+
+    // Empty on purpose
+}
+
 class DrupalAuth {
 
     /** @var DrupalPluginConfig */
@@ -47,7 +52,9 @@ class DrupalAuth {
             return $this->getInputs($matches[1]);
         }
 
-        die('Didn’t find a login form. Please check the plugin configuration.');
+        throw new NoDrupalFormFoundException(
+            'Didn’t find a login form. Please check the plugin configuration.'
+        );
     }
 
     private function getInputs($form) {
@@ -138,10 +145,16 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
         $username = $typed_username;
         $username .= stripos($typed_username, '@quodata.de') === FALSE ?
             '@quodata.de' : '';
-        if ($this->drupal->authenticate(
-            ['name' => $username, 'pass' => $password],
-            'agent')) {
+        try {
+            $is_authenticated = $this->drupal->authenticate(
+                ['name' => $username, 'pass' => $password],
+                'agent'
+            );
+        } catch (NoDrupalFormFoundException $e) {
+            return false;
+        }
 
+        if ($is_authenticated) {
             $ost_username = str_ireplace('@quodata.de', '', $typed_username);
             if ($acct = StaffSession::lookup($ost_username)) {
                 return $acct;
