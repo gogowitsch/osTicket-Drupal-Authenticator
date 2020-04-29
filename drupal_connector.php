@@ -143,8 +143,13 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
         global $cfg;
 
         $username = $typed_username;
-        $username .= stripos($typed_username, '@quodata.de') === FALSE ?
-            '@quodata.de' : '';
+        $domain = $this->config->get('drupal-email-domain');
+        if ($domain) {
+            // Attach @example.com if needed.
+            $username .= stripos($typed_username, $domain) === FALSE
+                ? $domain
+                : '';
+        }
         try {
             $is_authenticated = $this->drupal->authenticate(
                 ['name' => $username, 'pass' => $password],
@@ -155,7 +160,7 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
         }
 
         if ($is_authenticated) {
-            $ost_username = str_ireplace('@quodata.de', '', $typed_username);
+            $ost_username = str_ireplace($domain, '', $typed_username);
             if ($acct = StaffSession::lookup($ost_username)) {
                 return $acct;
             }

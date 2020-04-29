@@ -50,6 +50,21 @@ class DrupalPluginConfig extends PluginConfig {
             'configuration' => ['size' => 60, 'length' => 100],
             'hint' => $__('This URL should return the HTTP status 403 if not logged in.'),
           ]),
+          'drupal-email-domain' => new TextboxField([
+            'label' => $__('Domain to remove from email addresses'),
+            'validator' => 'domain-lead-by-at',
+            'configuration' => ['size' => 60, 'length' => 100],
+            'hint' => $__('
+                 Optional. In case the login page URL requires an
+                 email address as the user name, this config options does two
+                 things:<ol style="width: 700px">
+                 <li>@domain part will be removed to convert the email address
+                 to an osTicket user name.
+                 <li>If the user did not type the email address, but only the
+                 local part, the @example.com part will be added before it is
+                 sent to the login page URL form.</ol>
+                 This field should be empty or start with an "@" character.'),
+          ]),
         ];
     }
 }
