@@ -132,14 +132,18 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
         return $parts['host'] . ' (Drupal)';
     }
 
-    public function authenticate($username, $password = FALSE) {
+    public function authenticate($typed_username, $password = FALSE) {
         global $cfg;
 
+        $username = $typed_username;
+        $username .= stripos($typed_username, '@quodata.de') === FALSE ?
+            '@quodata.de' : '';
         if ($this->drupal->authenticate(
             ['name' => $username, 'pass' => $password],
             'agent')) {
 
-            if ($acct = StaffSession::lookup($username)) {
+            $ost_username = str_ireplace('@quodata.de', '', $typed_username);
+            if ($acct = StaffSession::lookup($ost_username)) {
                 return $acct;
             }
 
