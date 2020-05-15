@@ -120,6 +120,7 @@ class DrupalAuth {
 
 class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
 
+    use DrupalBackendTrait;
     public static $id = "drupal";
 
     public static $name = "Drupal";
@@ -133,11 +134,6 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
     public function __construct($config) {
         $this->config = $config;
         $this->drupal = new DrupalAuth($config);
-    }
-
-    public function getName() {
-        $parts = parse_url($this->config->get('drupal-login-url'));
-        return $parts['host'] . ' (Drupal)';
     }
 
     public function authenticate($typed_username, $password = FALSE) {
@@ -178,6 +174,8 @@ class DrupalStaffAuthBackend extends StaffAuthenticationBackend {
 
 class DrupalClientAuthBackend extends UserAuthenticationBackend {
 
+    use DrupalBackendTrait;
+
     public static $id = "drupal.client";
 
     public static $name = "Drupal";
@@ -191,11 +189,6 @@ class DrupalClientAuthBackend extends UserAuthenticationBackend {
     public function __construct($config) {
         $this->config = $config;
         $this->drupal = new DrupalAuth($config);
-    }
-
-    public function getName() {
-        $parts = parse_url($this->config->get('drupal-login-url'));
-        return $parts['host'] . ' (Drupal)';
     }
 
     public function authenticate($username, $password = FALSE) {

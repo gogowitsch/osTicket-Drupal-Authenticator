@@ -1,6 +1,7 @@
 <?php
 
 require_once(INCLUDE_DIR.'class.plugin.php');
+require_once(__DIR__.'/DrupalBackendTrait.php');
 require_once('config.php');
 
 class DrupalAuthPlugin extends Plugin {
