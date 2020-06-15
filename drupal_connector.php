@@ -101,12 +101,15 @@ class DrupalAuth {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 
-        $cookie_file_path = '/tmp/drupal_cookie_jar.' . mt_rand();
-        register_shutdown_function(
-            static function () use ($cookie_file_path) {
-                @unlink($cookie_file_path);
-            }
-        );
+        static $cookie_file_path;
+        if (!$cookie_file_path) {
+            $cookie_file_path = '/tmp/drupal_cookie_jar.' . mt_rand();
+            register_shutdown_function(
+                static function () use ($cookie_file_path) {
+                    @unlink($cookie_file_path);
+                }
+            );
+        }
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
 
